@@ -29,4 +29,5 @@ Header
   align-items: center
   color: white
   font-size: 20px
+  z-index: 999999
 </style>

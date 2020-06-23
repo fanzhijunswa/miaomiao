@@ -1,14 +1,19 @@
 <template lang="pug">
 .movie-content
-  div hahaha
 </template>
  
 <script>
+import { getMovieList } from '@/api/movie'
 export default {
   name: "movie-content",
-  components: {},
+  components: {
+
+  },
   data() {
     return {};
+  },
+  async created () {
+    console.log(await getMovieList({ film_tid: 1 }))
   },
   methods: {}
 };

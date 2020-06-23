@@ -14,6 +14,4 @@ export default {
 
 <style lang='sass' scoped>
 @import '~styles/_color.sass'
-.container
-  color: $color-red
 </style>

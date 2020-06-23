@@ -20,7 +20,9 @@ module.exports = {
     "no-unused-vars": 0,
     "prefer-const": 0,
     "comma-dangle": 0,
-    "array-bracket-spacing": 0
+    "array-bracket-spacing": 0,
+    "indent": 0,
+    "prefer-promise-reject-errors": 0
   },
   parserOptions: {
     parser: 'babel-eslint'

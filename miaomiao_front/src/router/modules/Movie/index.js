@@ -9,15 +9,24 @@ export default [{
     {
       path: 'hot',
       name: 'hot',
-      component: () => import('@/views/Movie/components/MovieContent')
+      meta: {
+        keepAlive: true
+      },
+      component: () => import('@/views/Movie/components/MovieHot')
     }, {
       path: 'future',
       name: 'future',
-      component: () => import('@/views/Movie/components/MovieContent')
+      meta: {
+        keepAlive: true
+      },
+      component: () => import('@/views/Movie/components/MovieFuture')
     }, {
       path: 'classic',
       name: 'classic',
-      component: () => import('@/views/Movie/components/MovieContent')
+      meta: {
+        keepAlive: true
+      },
+      component: () => import('@/views/Movie/components/MovieClassic')
     },
   ]
 }]

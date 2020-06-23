@@ -2,51 +2,52 @@
 .Movie
   header-title 
     .title {{'电影'}}
-  ul.film-ul
-    router-link(to="/movie/hot" tag="li" class="left") 正在热映
-    router-link(to="/movie/future" tag="li" class="center") 即将上映
-    router-link(to="/movie/classic" tag="li" class="right") 经典影片
+  van-tabs(@click="$router.push($event)")
+    van-tab(title="正在热映" name="hot") 
+    van-tab(title="即将上映" name="future") 
+    van-tab(title="经典影片" name="classic")
+    van-tab(title="标签 3") 
   .movie-content
     keep-alive
-      router-view 
+      router-view(v-if="$route.meta.keepAlive") 
+    router-view(v-if="!$route.meta.keepAlive") 
   tab-bar 
 </template>
  
 <script>
+import { Tabs, Tab } from 'vant'
 import HeaderTitle from "components/HeaderTitle";
 import TabBar from "components/TabBar";
 export default {
   name: "Movie",
   components: {
     HeaderTitle,
-    TabBar
+    TabBar,
+    [Tabs.name]: Tabs,
+    [Tab.name]: Tab
   },
   data() {
     return {};
   },
+  created () {
+    
+  },
   activated() {},
-  methods: {}
+  methods: {
+
+  }
 };
 </script>
  
 <style lang="sass" scoped>
 @import '~styles/_color.sass'
 .Movie
-  padding: 170px 0 80px 0
-  .film-ul
-    position: fixed
-    top: 80px
-    left: 0
+  padding: 80px 0
+  .van-tabs
     width: 100%
-    color: $color-white
-    display: flex
-    justify-content: space-around
-    align-items: center
-    height: 90px
-    background-color: $color-red
-    li
-      font-size: 28px
-      padding-bottom: 10px
-    .router-link-active
-      border-bottom: 2px solid white
+    position: fixed
+    z-index: 999998
+  .movie-content
+    padding: 88px 30px 0
+  
 </style>

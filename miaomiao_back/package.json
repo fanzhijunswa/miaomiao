@@ -2,7 +2,7 @@
   "name": "miaomiao_back",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,9 +11,12 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.9.19"
+    "mongoose": "^5.9.20"
   },
   "devDependencies": {
-    "querystring": "^0.2.0"
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "lodash": "^4.17.15"
   }
 }
