@@ -3,17 +3,17 @@
 </template>
  
 <script>
-import { getMovieList } from '@/api/movie'
+import { movieMixin } from '../mixins/movieMixin'
 export default {
   name: "movie-content",
+  mixins: [movieMixin],
   components: {
 
   },
   data() {
-    return {};
-  },
-  async created () {
-    console.log(await getMovieList({ film_tid: 1 }))
+    return {
+      film_tid: 1
+    };
   },
   methods: {}
 };

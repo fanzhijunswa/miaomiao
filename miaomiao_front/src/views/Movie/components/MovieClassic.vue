@@ -27,12 +27,18 @@ van-pull-refresh(v-model="isLoading" @refresh="onRefresh" success-text="刷新�
 </template>
  
 <script>
-import { getMovieList } from '@/api/movie'
+import { movieMixin } from '../mixins/movieMixin'
 export default {
   name: "movie-classic",
   components: {
 
   },
+  data() {
+      return {
+          film_tid: 2
+      }
+  },
+  mixins: [movieMixin],
   filters: {
       evrFilter1 (item) {
           return String.prototype.toUpperCase.call(/(\w+)\d/.exec(item)[1])
@@ -43,49 +49,6 @@ export default {
       actorFilter (item) {
           return item.length ? item.join('、') : '未知'
       }
-  },
-  data() {
-    return {
-        current: 0,
-        finished: false,
-        movieClassicList: [],
-        isLoading: false,
-        loading: false
-    };
-  },
-  methods: {
-      // 上拉加载
-    async onLoad () {
-        await this.getData()
-        this.loading = false
-    },
-    activated() {
-        console.log(12)
-    },
-    // 下拉刷新
-    async onRefresh () {
-        this.current = 0
-        this.finished = false
-        await this.getMovieList()
-        this.isLoading = false
-    },
-    getData () {
-        return Promise.all([this.getMovieList()]).catch(e => console.warn(e))
-    },
-    getMovieList () {
-        return new Promise(async (resolve, reject) => {
-            try {
-                await this.$sleep()
-                const list = await getMovieList({ film_tid: 2, current: this.current })
-                this.finished = list.length !== 10
-                this.movieClassicList = [...(!this.current ? [] : this.movieClassicList), ...list]
-                this.current++
-                resolve()
-            } catch (e) {
-                reject('电影列表获取失败')
-            }
-        })
-    }
   }
 };
 </script>
