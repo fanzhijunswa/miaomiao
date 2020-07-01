@@ -19,7 +19,13 @@
                     .datePublished {{ movieDetail.datePublished + '上映' }}
                     .button
                         .hop-watch
+                            .group
+                                i(class="iconfont icon-xiangkan")
+                                span 想看
                         .watched
+                            .group
+                                i(class="iconfont icon-shoucang")
+                                span 看过
             .content-score-group
                 .up
                     img(src="@/assets/images/cat.png")
@@ -28,8 +34,22 @@
                     .left
                         h1 {{ !!movieDetail.aggregateRating && movieDetail.aggregateRating[0]['ratingValue'] }}
                     .right 
-                        van-progress(percentage="50")
+                        .right-item-left
+                            .star-group(v-for="(item,index) in movieDetail.star" :key="index")
+                                i(class="iconfont icon-start-copy" v-for="item in 5-index" :key="item")
+                        .right-item-center
+                            .score-progess(v-for="(item,index) in movieDetail.star" :key="index")
+                                van-progress(:percentage="item | scoreFilter" stroke-width="8" :show-pivot="false" :color="color")
+                        .right-item-right
+                            .score-list(v-for="(item,index) in movieDetail.star" :key="index") {{ item }}
             .content-description-group
+                .discription-group
+                    .up
+                        .left 简介
+                        .right
+                            span 展开
+                            i(class="iconfont icon-zhankai")
+                    .down &nbsp;&nbsp;{{movieDetail.description}}
             .content-actor-group
     tab-bar(:leftandRight="1" :color="color")
 </template>
@@ -45,20 +65,24 @@ export default {
  components: {
     HeaderTitle,
     TabBar,
-    Progress
+    [Progress.name]: Progress
  },
  filters: {
      actorFilter2 (item) {
         if (!item) return ''
         const nameList = item.map(i => i.name)
         return nameList.slice(0, 3).join('、')
+     },
+     scoreFilter (item) {
+         if (!item) return 0
+         return +(/(.+)%$/.exec(item)[1])
      }
  },
  data () {
- return {
-     movieDetail: {},
-     color: '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6)
- }
+    return {
+        movieDetail: {},
+        color: '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6)
+    }
  },
  async created() {
      try {
@@ -125,22 +149,48 @@ export default {
                         height: 100%
                 .right
                     flex: 5
+                    display: flex
+                    flex-direction: column
                     h1
+                        margin-bottom: 20px
                         color:#fff
-                        margin-bottom: 15px
                         display: -webkit-box   
                         -webkit-box-orient: vertical   
-                        -webkit-line-clamp: 2 
+                        -webkit-line-clamp: 1 
                         overflow: hidden
-                    .genre
+                    .genre,.datePublished
+                        margin-bottom: 10px
                         color: #222
-                        margin-bottom: 15px
+                        font-size: 10px
                     .actor
-                        margin-bottom: 15px
+                        margin-bottom: 10px
+                        font-size: 10px
                         display: -webkit-box   
                         -webkit-box-orient: vertical   
                         -webkit-line-clamp: 2 
                         overflow: hidden
+                    
+                    .button
+                        flex: 1
+                        display: flex
+                        .watched
+                            border-radius: 10px
+                            flex: 1
+                            background: hsla(0,0%,100%,.35)
+                            box-shadow: 0 0.02rem 0.08rem 0 rgba(0,0,0,.1)
+                            .group
+                                width: 100%
+                                height: 100%
+                                display: flex
+                                justify-content: center
+                                align-items: center
+                                transform: scale(.7)
+                                i
+                                    margin-right: 10px
+                                    vertical-align: middle
+                        .hop-watch
+                            @extend .watched
+                            margin-right: 30px
             .content-score-group
                 margin: 30px 0
                 width: 100%
@@ -148,7 +198,7 @@ export default {
                 background: rgba(0, 0, 0,.3 )
                 display: flex
                 flex-direction: column
-                padding: 20px
+                padding: 20px 30px 50px
                 .up
                     margin-bottom: 50px
                     img
@@ -161,8 +211,10 @@ export default {
                         font-size: 20px
                 .down
                     display: flex
+                    padding: 20px 0 50px
+                    border-bottom: 2px solid #CCC
                     .left
-                        flex: 4
+                        flex: 3
                         display: flex
                         justify-content: center
                         align-items: center
@@ -173,5 +225,48 @@ export default {
                     .right
                         flex: 5
                         justify-content: flex-start
-
+                        display: flex
+                        .right-item-left
+                            .star-group
+                                transform: scale(0.7)
+                                height: 36px
+                                i
+                                    color: #222
+                                    font-size: 12px
+                        .right-item-center
+                            flex: 2
+                            margin-right: 10px
+                            .score-progess
+                                height: 36px
+                                width: 100%
+                                display: flex
+                                align-items: center
+                                .van-progress
+                                    width: 100%
+                        .right-item-right
+                            flex: 1
+                            display: flex
+                            flex-direction: column
+                            align-items: center
+                            font-size: 12px
+                            color: #222
+                            .score-list
+                                transform: scale(.7)
+            .content-description-group
+                .discription-group
+                    .up
+                        display: flex
+                        justify-content: space-between
+                        margin-bottom: 15px
+                        .left
+                            color: white
+                        .right
+                            display: flex
+                            color: #666
+                            font-size: 12px
+                            transform: scale(.9)
+                    .down
+                        line-height: 1.5
+                        transform: scale(.9)
+                               
 </style>

@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "6684312",
+      "name": "想看",
+      "font_class": "xiangkan",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "12609428",
+      "name": "shoucang",
+      "font_class": "shoucang",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "6083936",
+      "name": "展 开",
+      "font_class": "zhankai",
+      "unicode": "e642",
+      "unicode_decimal": 58946
+    },
+    {
+      "icon_id": "10099259",
+      "name": "实心星星",
+      "font_class": "start-copy",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
       "icon_id": "13784708",
       "name": "猫",
       "font_class": "Artboard-copy",
