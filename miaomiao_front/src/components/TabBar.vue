@@ -1,5 +1,5 @@
 <template lang="pug">
-footer
+footer(ref="footer")
   ul.tab-bar
     router-link(tag="li" to="/")
       i(class="iconfont icon-shouye")
@@ -13,8 +13,24 @@ footer
 export default {
   name: "TabBar",
   components: {},
+  props: {
+     leftandRight: {
+      type: Number,
+      default: () => 0
+    },
+    color: {
+      type: String,
+      default: () => ''
+    }
+  },
   data() {
     return {};
+  },
+  mounted () {
+    if (this.leftandRight) {
+      this.$refs.footer.style.backgroundColor = this.color
+      this.$refs.footer.style.opacity = 0.5
+    }
   },
   methods: {}
 };

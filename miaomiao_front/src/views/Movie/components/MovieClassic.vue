@@ -3,26 +3,23 @@ van-pull-refresh(v-model="isLoading" @refresh="onRefresh" success-text="刷新�
     van-list(v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad")
         .movie-classic
             ul.movie-classic-lit
-                li.movie-classic-item(v-for="item in movieClassicList")
-                    .classic-item-left
+                li.movie-classic-item(v-for="item in movieList")
+                    .classic-item-left(@click="$router.push(`/movieDetail/${item.id}`)")
                         .classic-item-img
-                            img(:src="item.film_img")
+                            img(:src="item.cover")
                     .classic-item-right  
                         .classic-item-introduce
                             .classic-item-one
-                                h6.classic-item-title {{ item.film_title }}
-                                .classic-item-evr(v-if="!!item.film_evr")
-                                    .classic-evr-left {{ item.film_evr | evrFilter1 }}
-                                    .classic-evr-right {{ item.film_evr | evrFilter2 }}
+                                h6.classic-item-title {{ item.title }}
                             .classic-item-two
                                 .classic-item-word 喵喵评分：
-                                .classic-item-score {{ item.film_score }}
+                                .classic-item-score {{ item.rate }}
                             .classic-item-three
-                                .classic-item-word 主演:{{ item.film_actor | actorFilter }}
+                                .classic-item-word 类别:{{ item.detail[0]['genre'] | actorFilter }}
                                 .classic-item-actor(v-for="") 
                             .classic-item-four
                                 .classic-item-word 上映时间:
-                                .classic-item-time {{ item.film_time }}
+                                .classic-item-time {{ item.detail[0]['datePublished'] }}
                         .classic-item-play      
 </template>
  
@@ -35,7 +32,7 @@ export default {
   },
   data() {
       return {
-          film_tid: 2
+          tag: 0
       }
   },
   mixins: [movieMixin],
@@ -45,9 +42,6 @@ export default {
       },
       evrFilter2 (item) {
           return String.prototype.toUpperCase.call(/\w+(\d\w+)/.exec(item)[1])
-      },
-      actorFilter (item) {
-          return item.length ? item.join('、') : '未知'
       }
   }
 };

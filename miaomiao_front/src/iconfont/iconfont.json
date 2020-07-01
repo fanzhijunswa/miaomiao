@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "13784708",
+      "name": "猫",
+      "font_class": "Artboard-copy",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "5606733",
+      "name": "更多",
+      "font_class": "gengduo",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "13522702",
+      "name": "返 回",
+      "font_class": "fanhui4",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
       "icon_id": "6426028",
       "name": "首页-选中",
       "font_class": "shouye",

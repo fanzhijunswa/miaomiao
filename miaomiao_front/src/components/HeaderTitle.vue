@@ -1,13 +1,32 @@
 <template lang="pug">
-header
+header(ref="header")
+  slot(name="left")
   slot 
     .title {{'喵喵电影'}}
+  slot(name="right")
 </template>
  
 <script>
 export default {
   name: "HeaderTitle",
   components: {},
+  props: {
+    leftandRight: {
+      type: Number,
+      default: () => 0
+    },
+    color: {
+      type: String,
+      default: () => ''
+    }
+  },
+  mounted () {
+    if (this.leftandRight) {
+      this.$refs.header.style['justify-content'] = 'space-between'
+      this.$refs.header.style.backgroundColor = this.color
+      this.$refs.header.style.opacity = 0.5
+    }
+  },
   data() {
     return {};
   },
@@ -25,6 +44,7 @@ Header
   height: 80px
   background-color: $color-red
   display: flex
+  padding: 0 20px
   justify-content: center
   align-items: center
   color: white

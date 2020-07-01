@@ -1,12 +1,11 @@
 const express = require('express')
 const movieRouter = express.Router()
-const Movie = require('../../Dao/movie')
+const movieListRouter = require('./model/movieList')
+const tagListRouter = require('./model/tagList')
+const movieDetailRouter = require('./model/movieDetail')
 
-
-movieRouter.post('/movieList',async (req,res) => {
-  const { film_tid,current } = req.body
-  const data = await Movie.myFind({film_tid},{_limit:10,_skip: current * 10})
-  res.send({code:1,msg:'响应成功',data})
-})
+movieRouter.use('/movieList',movieListRouter)
+movieRouter.use('/tagList',tagListRouter)
+movieRouter.use('/movieDetail',movieDetailRouter)
 
 module.exports = movieRouter

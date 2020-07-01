@@ -4,13 +4,13 @@ export const movieMixin = {
     return {
         current: 0,
         finished: false,
-        movieClassicList: [],
+        movieList: [],
         isLoading: false,
         loading: false
     };
   },
   async created () {
-    console.log(await getMovieList({ film_tid: this.film_tid, current: this.current }))
+    console.log(await getMovieList({ tag: this.tag, current: this.current }))
   },
   methods: {
       // 上拉加载
@@ -28,10 +28,10 @@ export const movieMixin = {
     getMovieList () {
         return new Promise(async (resolve, reject) => {
             try {
-                await this.$sleep()
-                const list = await getMovieList({ film_tid: this.film_tid, current: this.current })
+                // await this.$sleep()
+                const list = await getMovieList({ tag: this.tag, current: this.current })
                 this.finished = list.length !== 10
-                this.movieClassicList = [...(!this.current ? [] : this.movieClassicList), ...list]
+                this.movieList = [...(!this.current ? [] : this.movieList), ...list]
                 this.current++
                 resolve()
             } catch (e) {

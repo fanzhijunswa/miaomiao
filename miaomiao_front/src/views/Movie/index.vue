@@ -3,14 +3,9 @@
   header-title 
     .title {{'电影'}}
   van-tabs(@click="$router.push($event)")
-    van-tab(title="正在热映" name="hot") 
-    van-tab(title="即将上映" name="future") 
-    van-tab(title="经典影片" name="classic")
-    van-tab(title="标签 3") 
+    van-tab(v-for="({ename,cname,_id}) in tagList" :key="_id" :title="cname" :name="ename") 
   .movie-content
-    keep-alive
-      router-view(v-if="$route.meta.keepAlive") 
-    router-view(v-if="!$route.meta.keepAlive") 
+    router-view
   tab-bar 
 </template>
  
@@ -18,6 +13,7 @@
 import { Tabs, Tab } from 'vant'
 import HeaderTitle from "components/HeaderTitle";
 import TabBar from "components/TabBar";
+import { getTag } from 'api/movie'
 export default {
   name: "Movie",
   components: {
@@ -27,15 +23,29 @@ export default {
     [Tab.name]: Tab
   },
   data() {
-    return {};
+    return {
+        tagList: []
+    };
   },
-  created () {
-    
+  async created () {
+    await this.getData()
   },
   activated() {},
   methods: {
-
-  }
+      getData () {
+          return Promise.all([this.getTag()])
+      },
+      getTag() {
+          return new Promise(async (resolve, reject) => {
+              try {
+                  this.tagList = await getTag()
+                  resolve()
+                } catch (e) {
+                    reject('分类列表获取失败')
+                }  
+            })
+        }
+    }
 };
 </script>
  
