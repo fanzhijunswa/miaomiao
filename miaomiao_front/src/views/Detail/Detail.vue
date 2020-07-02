@@ -55,7 +55,7 @@
                         span 全部
                         i(class="iconfont icon-zhankai1")
                 ul.pic-group(slot="pics")
-                    li(v-for="({name,id,user_image}) in movieDetail.allStar" :key="id + ~~(Math.random() * 10000)" v-if="!!name")
+                    li(v-for="({name,id,user_image}) in movieDetail.allStar" :key="name+id" v-if="!!name")
                         .up
                             img(:src="!!user_image ? user_image :'//p0.meituan.net/moviemachine/b99384cf1eacb139fde0509af424af6623037.png@160w_224h_1e_1c'") 
                         .down {{ name }}
