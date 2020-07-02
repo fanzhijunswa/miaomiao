@@ -29,7 +29,6 @@ export default {
   mounted () {
     if (this.leftandRight) {
       this.$refs.footer.style.backgroundColor = this.color
-      this.$refs.footer.style.opacity = 0.5
     }
   },
   methods: {}
@@ -45,6 +44,7 @@ footer
   width: 100%
   height: 80px
   background-color: $color-red
+  z-index: 999999999
   .tab-bar
     height: 100%
     display: flex

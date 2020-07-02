@@ -26,9 +26,9 @@ const getActor = async () => {
     for(let id of actorIdArr) {
       try{
         const item = await getActorDetail(id)
-        let actor = new Actor(item)
-        await actor.mySave()
-        console.log(`${item['name']}存储完成`)
+        // let actor = new Actor(item)
+        // await actor.mySave()
+        // console.log(`${item['name']}存储完成`)
       }catch(e){
         console.log(e)
         console.log('请求失败------拦截成功，正在继续请求')
@@ -41,5 +41,10 @@ const getActor = async () => {
   
 }
 
-
-getActor()
+const ceshi = async () => {
+  const data = await Actor.myFind({})
+  const index = data.findIndex(item => item.name === '汤米·李·琼斯 Tommy Lee Jones')
+  console.log(index)
+}
+ceshi()
+// getActor()

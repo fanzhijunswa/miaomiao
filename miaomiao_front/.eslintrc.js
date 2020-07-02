@@ -22,7 +22,8 @@ module.exports = {
     "comma-dangle": 0,
     "array-bracket-spacing": 0,
     "indent": 0,
-    "prefer-promise-reject-errors": 0
+    "prefer-promise-reject-errors": 0,
+    "no-irregular-whitespace":0
   },
   parserOptions: {
     parser: 'babel-eslint'

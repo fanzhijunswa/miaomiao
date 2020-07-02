@@ -28,7 +28,7 @@ const getActorPic = ({pid,start = 0}) => {
 const getData = async () => {
   const {length:countAll} = await Actor.myFind({})
   try{
-    for(let _skip=0;_skip<countAll;_skip++) {
+    for(let _skip=0;_skip<=countAll;_skip++) {
       const [{pid,name}] = await Actor.myFind({},{_skip,_limit:1})
       const countPic = await getActorPic({pid})
       let imgList = []
@@ -38,7 +38,7 @@ const getData = async () => {
       }
       const actorPic = new ActorPic({imgList,pid,name})
       await actorPic.mySave()
-      console.log(`${name}存储完成`)
+      console.log(`${name}存储完成,当前索引为${_skip}`)
     } 
     console.log('全部存储完成')
   }catch(e){

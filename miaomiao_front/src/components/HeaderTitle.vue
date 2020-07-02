@@ -24,7 +24,6 @@ export default {
     if (this.leftandRight) {
       this.$refs.header.style['justify-content'] = 'space-between'
       this.$refs.header.style.backgroundColor = this.color
-      this.$refs.header.style.opacity = 0.5
     }
   },
   data() {
@@ -50,4 +49,9 @@ Header
   color: white
   font-size: 20px
   z-index: 999999
+.title
+  padding: 0 50px
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
 </style>

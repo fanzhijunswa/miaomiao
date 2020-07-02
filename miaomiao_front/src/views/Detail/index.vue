@@ -42,20 +42,29 @@
                                 van-progress(:percentage="item | scoreFilter" stroke-width="8" :show-pivot="false" :color="color")
                         .right-item-right
                             .score-list(v-for="(item,index) in movieDetail.star" :key="index") {{ item }}
-            .content-description-group
-                .discription-group
-                    .up
-                        .left 简介
-                        .right
-                            span 展开
-                            i(class="iconfont icon-zhankai")
-                    .down &nbsp;&nbsp;{{movieDetail.description}}
-            .content-actor-group
+            card
+                .left(slot="left") 简介
+                .right(slot="right") 
+                    span 展开
+                    i(class="iconfont icon-zhankai")
+                .introduce(slot="down") {{movieDetail.description}}
+            card
+                .left(slot="left") 演职人员
+                .right(slot="right")
+                    .group(@click="$router.push({path:`/credits/${$route.params.id}`,query:{color:color}})") 
+                        span 全部
+                        i(class="iconfont icon-zhankai1")
+                ul.pic-group(slot="pics")
+                    li(v-for="({name,id,user_image}) in movieDetail.allStar" :key="id + ~~(Math.random() * 10000)" v-if="!!name")
+                        .up
+                            img(:src="!!user_image ? user_image :'//p0.meituan.net/moviemachine/b99384cf1eacb139fde0509af424af6623037.png@160w_224h_1e_1c'") 
+                        .down {{ name }}
     tab-bar(:leftandRight="1" :color="color")
 </template>
  
 <script>
 import _ from 'lodash'
+import Card from './components/Card'
 import { Progress } from 'vant'
 import HeaderTitle from "components/HeaderTitle";
 import TabBar from "components/TabBar";
@@ -63,6 +72,7 @@ import { getmovieDetail } from 'api/movie'
 export default {
  name: 'movie-detail',
  components: {
+    Card,
     HeaderTitle,
     TabBar,
     [Progress.name]: Progress
@@ -102,7 +112,7 @@ export default {
       getmovieDetail () {
           return new Promise(async (resolve, reject) => {
               try {
-                  this.movieDetail = _.get(await getmovieDetail(this.$route.params.id), 0)
+                  this.movieDetail = await getmovieDetail(this.$route.params.id)
                   resolve()
               } catch (e) {
                   reject('电影详情获取失败')
@@ -119,9 +129,8 @@ export default {
         font-size: 40px
 .movie-detail
     padding: 80px 0 
-    height: 100vh
     .content
-        height: 100%
+        height: 2000px
         position: relative
         .opacity-content
             width: 100%
@@ -252,21 +261,5 @@ export default {
                             color: #222
                             .score-list
                                 transform: scale(.7)
-            .content-description-group
-                .discription-group
-                    .up
-                        display: flex
-                        justify-content: space-between
-                        margin-bottom: 15px
-                        .left
-                            color: white
-                        .right
-                            display: flex
-                            color: #666
-                            font-size: 12px
-                            transform: scale(.9)
-                    .down
-                        line-height: 1.5
-                        transform: scale(.9)
                                
 </style>
