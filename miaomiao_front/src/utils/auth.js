@@ -1,10 +1,14 @@
 import axios from 'axios'
-
+import { get } from '@/libs/util'
+import store from '@/store'
+import router from '@/router'
 const instance = axios.create()
 instance.defaults.baseURL = '/api'
 instance.defaults.withCredentials = true
 
 instance.interceptors.request.use(config => {
+  const token = get('token')
+  if (token) config.headers.Authorization = token
   return config
 }, err => Promise.reject(err))
 
@@ -18,7 +22,14 @@ instance.interceptors.response.use(
       return res
     }
   },
-  err => Promise.reject(err)
+  err => {
+    if (err.response && err.response.status === 900) {
+      const login = { path: '/login', query: { redirect: router.currentRoute.path } }
+      store.commit('removeUserInfo')
+      router.push(login)
+    }
+    return Promise.reject(err)
+  }
 )
 
 export const request = ({ url, data = '', method = 'get' }) => {

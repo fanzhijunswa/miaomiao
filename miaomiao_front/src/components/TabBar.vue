@@ -5,7 +5,7 @@ footer(ref="footer")
       i(class="iconfont icon-shouye")
     router-link(tag="li" to="/movie")
       i(class="iconfont icon-dianying")
-    router-link(tag="li" to="/") 
+    router-link(tag="li" to="/userInfo") 
       i(class="iconfont icon-wode")
 </template>
  

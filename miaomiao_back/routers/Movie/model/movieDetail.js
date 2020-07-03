@@ -40,7 +40,6 @@ const ceshi2  = list => {
       newItem = {...(JSON.parse(JSON.stringify(newItem))),user_image}
       newList.push(newItem)
     }
-    console.log(newList)
     resolve(newList)
   })
 }

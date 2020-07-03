@@ -1,7 +1,7 @@
 <template lang="pug">
 .movie-detail
     header-title(:leftandRight="1" :color="color")
-        .left(slot="left" @click="$router.go(-1)")
+        .left(slot="left" @click="$router.push('/movie')")
             i(class="iconfont icon-fanhui4")
         .title {{'电影详情'}}
         .right(slot="right")
