@@ -9,11 +9,11 @@
                     img(src="../../../assets/images/cat.png")
                 .img-text 喵喵电影
             h1 {{ !type ? '请输入帐号' : type === 'login' ? '欢迎注册喵喵电影' : '欢迎登录喵喵电影' }}
-        .middle-down
-            van-form(validate-first)
+        van-form
+            .middle-down
                 van-field(
                     v-if="!type"
-                    v-model="userInfo.tel"
+                    v-model="allNumber"
                     name="用户名/手机号/邮箱"
                     :rules="[{ required: true, message: '请填写用户名' }]"
                     @focus="$refs['icon-register'].style.display = 'block'"
@@ -25,41 +25,51 @@
                 template(v-if="type === 'login'")
                     van-field(
                         v-model="userInfo.tel"
+                        label="手机号："
                         placeholder="手机号"
-                        name="pattern"
-                        :rules="[{ pattern, message: '手机号格式错误' }]"
+                        name="手机号"
+                        :rules="[{ pattern: telPattern, message: '手机号格式错误' }]"
                     )
                 template(v-if="type === 'login'")
                     van-field(
                         v-model="userInfo.name"
+                        label="用户名："
                         name="用户名"
                         placeholder="用户名"
+                        :rules="[{ pattern:namePattern, message: '用户名不能多于8位' }]"
                     )
                 template(v-if="!!type")
                     van-field(
                         v-model="userInfo.pwd"
+                        label="密码："
                         type="password"
-                        name="pwdPattern"
+                        name="密码"
                         placeholder="密码"
-                        :rules="[{ pwdPattern, message: '请输入正确内容' }]"
+                        :rules="[{ pattern:pwdPattern, message: '密码由英文字母、数字、下划线组成' }]"
                     )
                 template(v-if="type === 'login'")
                     van-field(
                         v-model="userInfo.pwdSure"
+                        label="确认密码："
                         type="password"
                         name="确认密码"
                         placeholder="确认密码"
+                        :rules="[{ validator:surePwdValidator, message: '两次密码输入不一致' }]"
                     )
                 template(v-if="type === 'login'")
                     van-field(
+                        label="邮箱："
                         v-model="userInfo.email"
                         name="邮箱"
                         placeholder="邮箱"
+                        :rules="[{ pattern:emailPattern, message: '邮箱格式错误' }]"
                     )
             
     .down
         .button
-            van-button(round block type="info" native-type="submit" @click="loginForm(type)") {{ !type ? '下一步' : type === 'login' ? '注册' : '登录' }}
+            van-button(:loading="buttonLoading" loading-type="spinner" loading-text="玩命加载中" v-if="!type" round block type="info" native-type="submit" @click="nextType(type)") {{ '下一步' }}
+            van-button(:loading="buttonLoading" loading-type="spinner" loading-text="玩命加载中" v-else-if="type === 'login'" round block type="info" @click="login" native-type="submit") {{'注册'}}
+            van-button(:loading="buttonLoading" loading-type="spinner" loading-text="玩命加载中" v-else round block type="info" native-type="submit" @click="loginForm(type)") {{ '登录' }}
 </template>
  
 <script>
@@ -73,47 +83,69 @@ export default {
  },
  data () {
  return {
+     allNumber: '',
      userInfo: {
-         tel: '小明',
+         tel: '13147944665',
          pwd: 'junge1998925',
-         name: '小明',
-         email: '',
-         bidthday: '',
-         pwdSure: ''
+         name: 'xxxxx',
+         email: '2456080907@qq.com',
+         pwdSure: 'junge1998925'
      },
      type: '',
-     key: ''
+     key: '',
+     buttonLoading: false
  }
  },
   methods: {
+      async nextType () {
+        const data = await getUserTest(this.allNumber)
+        this.type = data.type
+        this.key = data.key
+      },
+      async login () {
+        this.buttonLoading = true
+        await this.$sleep()
+        const data = await loginUser(this.userInfo)
+        this.buttonLoading = false
+        this.setUserInfo(data)
+        this.$notify({ type: 'success', message: '登录成功' })
+        await this.$sleep()
+        // this.$router.push(this.$route.query.redirect === '/login' || !this.$route.query.redirect ? '/userInfo' : this.$route.query.redirect)
+      },
+     
+      surePwdValidator (val) {
+          return new RegExp('^' + this.userInfo.pwd + '$').test(this.userInfo.pwdSure)
+      },
       ...mapMutations(['setUserInfo']),
-      async loginForm (type) {
-          if (!type) {
-              this.type = _.get(await getUserTest(this.userInfo.tel), 'type')
-              this.key = _.get(await getUserTest(this.userInfo.tel), 'key')
-          }
-          if (type === 'login') {
-              console.log(await loginUser(this.userInfo))
-          }
-          if (type === 'register') {
-              try {
-                const userInfo = await registerUser({ user: this.userInfo.tel, pwd: this.userInfo.pwd, userKey: this.key })
-                this.setUserInfo(userInfo)
-                this.$notify({ type: 'success', message: '登录成功' });
-                this.$router.push(this.$route.query.redirect === '/login' || !this.$route.query.redirect ? '/home' : this.$route.query.redirect)
-              } catch (e) {
-                this.$notify({ type: 'danger', message: '账号或密码错误' });
-              }
-          }
+      async loginForm (type) {  
+        try {
+            this.buttonLoading = true
+            await this.$sleep()
+            const userInfo = await registerUser({ user: this.allNumber, pwd: this.userInfo.pwd, userKey: this.key })
+            this.buttonLoading = false
+            this.setUserInfo(userInfo)
+            this.$notify({ type: 'success', message: '登录成功' });
+            await this.$sleep()
+            this.$router.push(this.$route.query.redirect === '/login' || !this.$route.query.redirect ? '/home' : this.$route.query.redirect)
+        } catch (e) {
+            this.buttonLoading = false
+            this.$notify({ type: 'danger', message: '账号或密码错误' });
+        }
     }
   },
   computed: {
       ...mapGetters(['getUserInfo']),
-      pattern () {
+      telPattern () {
           return /^1[3579]\d{9}$/
       },
       pwdPattern () {
-          return /\d+/
+          return /^\w{6,12}$/
+      },
+      namePattern () {
+          return /^[\w\u4e00-\u9fa5]{1,8}$/
+      },
+      emailPattern () {
+          return /^\w+@[a-zA-Z0-9]+\.com$/
       }
   }
 }

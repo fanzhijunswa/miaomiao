@@ -1,28 +1,36 @@
 const { request } = require('./request')
 const cheerio = require('cheerio')
-const MovieDetail = require('../Dao/movieDetail')
 const Movie = require('../Dao/movie')
+const MovieStar = require('../Dao/movieStar')
+const Actor = require('../Dao/actor')
 const get$ = dom => cheerio.load(dom)
 
+const ceshi = arr => {
+  return new Promise(async resolve => {
+    let data = arr.reduce(async (prev,next) => {
+      let pid = /\/(\d+)\/$/.exec(next.url)[1]
+      const [{cover = ''} = {}] = await Actor.myFind({pid})
+      return [...await prev,{cover,name:next.name,pid}]
+    },Promise.resolve([]))
+    resolve(data)
+  })
+}
 
-const getMovieDetail = async () => {
+const getMovieStar = async () => {
   const {length} = await Movie.myFind({})
   for(let _skip=0; _skip < length;_skip++) {
-    const [{id,tag}] = await Movie.myFind({},{_skip,_limit:1})
-    try{
-      const item = await getData({id,tag})
-      let movieDetail = new MovieDetail(item)
-      await movieDetail.mySave()
-      console.log(`${item['name']}存储完成`)
-    }catch(e){
-      console.log('请求失败------拦截成功，正在继续请求')
-      _skip--
-      continue
-    }
+    const [{id,tag,title}] = await Movie.myFind({},{_skip,_limit:1})
+    const { director:newDirector,actor:newActor,author:newAuthor }  = await getData({id,tag})
+    let director = await ceshi(newDirector)
+    let actor = await ceshi(newActor)
+    let author = await ceshi(newAuthor)
+    // let movieStar = new MovieStar({director,actor,author,id})
+    // await movieStar.mySave()
+    // console.log(`${title}存储完成`)
   } 
   console.log('全部存储完成')
 }
-getMovieDetail()
+getMovieStar()
 
 
 
@@ -30,15 +38,12 @@ async function getData ({id,tag}) {
   const { data: dom } = await request({url: `/subject/${id}`,data: {tag:getCategory(tag)}})
   const $ = get$(dom)
   const {
-    name,
-    image,
-    datePublished,
-    genre,                                             
-    description,
-    aggregateRating
+    director,
+    actor,
+    author
   } = JSON.parse($('script[type="application/ld+json"]')[0].children[0]['data'].replace(/\s/g,''))
   const star = Object.values($('.rating_per')).reduce((prev,next) => !!next.children && !!next.children[0] ? [...prev,next.children[0]['data']] : prev,[])
-  return {id,name,image,datePublished,genre,description,aggregateRating,star}
+  return {director,actor,author}
 }
 
 function getCategory (tag) {

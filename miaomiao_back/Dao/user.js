@@ -13,7 +13,7 @@ const userSchema = new Schema({
   email:{
     type:String,
     required: true,
-    match: /^\w{6,10}@[a-zA-Z0-9]+\.com$/
+    match: /^\w+@[a-zA-Z0-9]+\.com$/
   },
   tel: {
     type: String,
@@ -22,17 +22,21 @@ const userSchema = new Schema({
   },
   sex: {
     type: Number,
-    required: true
+    default: 1
   },
   birthday: {
     type: Number,
     set:value => new Date(value).getTime(),
-    required: true
+    default: 0
   },
   introduce: {
     type:String,
     default: ''
   },
+  cover:{
+    type:String,
+    default:''
+  }
 })
 
 const arr = ['mySave','myFind','myDelete','myUpdate']

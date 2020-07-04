@@ -7,6 +7,11 @@ const actorSchema = new Schema({
     type:String,
     required:true 
   },
+  cover:{
+    type:String,
+    required: true,
+    default:''
+  },
   name: {
     type:String,
     required:true

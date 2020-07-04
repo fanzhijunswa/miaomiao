@@ -1,10 +1,7 @@
 const express = require('express')
 const home = express.Router()
+const swipperRourter = require('./model/swipper')
 
-home.get('/', (req, res) => {
-  res.send({
-    name: 'xxii'
-  })
-})
+home.use('/swipper',swipperRourter)
 
 module.exports = home
