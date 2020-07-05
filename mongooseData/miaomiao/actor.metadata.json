@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"miaomiao.actor"}],"uuid":"12f0e2ef41c942d394bd6f097d04a361"}

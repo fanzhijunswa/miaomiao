@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"miaomiao.tag"}],"uuid":"465133714abe4cb78844686d9c3de3e5"}
