@@ -14,24 +14,6 @@ const movieDetailSchema = new Schema({
     type:String,
     required: true
   },
-  director: { //导演
-    type:Array,
-    default: [],
-    required:true,
-    set
-  },
-  author: { // 编剧
-    type:Array,
-    default: [],
-    required:true,
-    set
-  },
-  actor: { //演员
-    type:Array,
-    default: [],
-    required:true,
-    set
-  },
   genre: { //类别
     type:Array,
     required: true
@@ -56,14 +38,14 @@ const movieDetailSchema = new Schema({
 
 })
 
-function set (arr) {
-  arr.map(item => {
-    !!item.url && !/^(https)|(http)/.test(item.url) && (item.url = 'https://movie.douban.com' + item.url)
-    item.id = /\/(\d+)\/$/.exec(item.url)[1]
-    return item
-  })
-  return arr
-}
+// function set (arr) {
+//   arr.map(item => {
+//     !!item.url && !/^(https)|(http)/.test(item.url) && (item.url = 'https://movie.douban.com' + item.url)
+//     item.id = /\/(\d+)\/$/.exec(item.url)[1]
+//     return item
+//   })
+//   return arr
+// }
 const arr = ['mySave','myFind','myDelete','myUpdate']
 arr.forEach((item,index) => {movieDetailSchema[!index ? 'methods':'statics'][item] = eval(item)})
 module.exports = mongoose.model('MovieDetail',movieDetailSchema,'movieDetail')

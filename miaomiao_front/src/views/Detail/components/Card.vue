@@ -67,4 +67,9 @@ export default {
                     color: white
                     font-size: 12px
                     line-height: 1.5
+        .movie-photo
+            @extend .pic-group
+            li
+                min-width: 280px
+                min-height: 190px
 </style>

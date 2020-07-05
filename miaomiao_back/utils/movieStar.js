@@ -67,3 +67,8 @@ function getCategory (tag) {
     case 16: return "成长"
   }
 }
+
+/* 1个电影 对应 1个电影详情
+1个电影详情 对应 多个演职人员
+1个影星 对应 1个影星图库
+*/

@@ -11,9 +11,9 @@ const getMovieDetail = async () => {
     const [{id,tag}] = await Movie.myFind({},{_skip,_limit:1})
     try{
       const item = await getData({id,tag})
-      let movieDetail = new MovieDetail(item)
-      await movieDetail.mySave()
-      console.log(`${item['name']}存储完成`)
+      // let movieDetail = new MovieDetail(item)
+      // await movieDetail.mySave()
+      // console.log(`${item['name']}存储完成`)
     }catch(e){
       console.log('请求失败------拦截成功，正在继续请求')
       _skip--

@@ -13,7 +13,7 @@
 import { Tabs, Tab } from 'vant'
 import HeaderTitle from "components/HeaderTitle";
 import TabBar from "components/TabBar";
-import { getTag } from 'api/movie'
+import { getTag } from 'api/Movie'
 export default {
   name: "Movie",
   components: {

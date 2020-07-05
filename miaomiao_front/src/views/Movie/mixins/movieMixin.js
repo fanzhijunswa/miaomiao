@@ -1,4 +1,4 @@
-import { getMovieList } from '@/api/movie'
+import { getMovieList } from '@/api/Movie'
 export const movieMixin = {
   data() {
     return {

@@ -2,7 +2,7 @@ export default [
   {
     path: '/userInfo',
     name: 'userInfo',
-    component: () => import('@/views/User/User.vue')
+    component: () => import('@/views/User')
   },
   {
     path: '/login',

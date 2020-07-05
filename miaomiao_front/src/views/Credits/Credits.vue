@@ -3,11 +3,11 @@
     header-title(:leftandRight="1" :color="$route.query.color")
         .left(slot="left" @click="$router.go(-1)")
             i(class="iconfont icon-fanhui4")
-        .title {{movieDetail.name}}
+        .title {{$route.query.title}}
         .right(slot="right")
             i(class="iconfont icon-gengduo")
     .cell-group
-        .cell(v-for="(item,index) in movieDetail.watchAll" :key="index" @click="changeChooseList(index)")
+        .cell(v-for="(item,index) in [director,author,actor]" :key="index" @click="changeChooseList(index)")
             .up
                 .left(v-if="index === 0") {{ '导演' }}
                 .left(v-if="index === 1") {{ '编剧' }}
@@ -32,7 +32,7 @@
  
 <script>
 import { Cell, CellGroup } from "vant";
-import { getmovieDetail } from "api/movie";
+import { getMovieStar } from "api/Movie";
 import HeaderTitle from "components/HeaderTitle";
 import TabBar from "components/TabBar";
 export default {
@@ -45,11 +45,25 @@ export default {
   },
   data() {
     return {
-      movieDetail: {},
+      movieStar: [],
       flag: false,
       chooseList: []
     };
   },
+  computed: {
+      director () {
+          if (!this.movieStar.director) return []
+          return this.movieStar.director
+      },
+      author () {
+          if (!this.movieStar.author) return []
+          return this.movieStar.author
+      },
+      actor () {
+          if (!this.movieStar.actor) return []
+          return this.movieStar.actor
+      }
+    },
   filters: {
     birthdayFilter(item) {
       try {
@@ -69,7 +83,7 @@ export default {
   },
   async created() {
     await this.getData();
-    console.log(this.movieDetail);
+    console.log(this.movieStar);
   },
   methods: {
     changeChooseList(index) {
@@ -77,12 +91,12 @@ export default {
       i === -1 ? this.chooseList.push(index) : this.chooseList.splice(i, 1);
     },
     getData() {
-      return Promise.all([this.getmovieDetail()]);
+      return Promise.all([this.getMovieStar()]);
     },
-    getmovieDetail() {
+    getMovieStar() {
       return new Promise(async (resolve, reject) => {
         try {
-          this.movieDetail = await getmovieDetail(this.$route.params.id);
+          this.movieStar = await getMovieStar(this.$route.params.id);
           resolve();
         } catch (e) {
           reject("电影详情获取失败");
