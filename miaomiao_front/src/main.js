@@ -8,11 +8,12 @@ import '@/utils/rem'
 import * as filters from '@/utils/filter'
 import store from '@/store'
 import { sleep } from '@/utils/sleep'
-import { Swipe, SwipeItem, PullRefresh, Toast, List, Form, Field, Button, Notify } from 'vant'
+import { Swipe, SwipeItem, PullRefresh, Toast, List, Form, Field, Button, Notify, Rate } from 'vant'
 Vue.prototype.$http = axios
 Vue.prototype.$toast = Toast
 Vue.prototype.$sleep = sleep
 Vue.use(Swipe)
+Vue.use(Rate)
 Vue.use(SwipeItem)
 Vue.use(PullRefresh)
 Vue.use(List)

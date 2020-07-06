@@ -23,7 +23,8 @@ module.exports = {
     "array-bracket-spacing": 0,
     "indent": 0,
     "prefer-promise-reject-errors": 0,
-    "no-irregular-whitespace":0
+    "no-irregular-whitespace":0,
+    "no-multiple-empty-lines": 0
   },
   parserOptions: {
     parser: 'babel-eslint'

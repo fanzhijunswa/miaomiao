@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "895475",
+      "name": "锁头",
+      "font_class": "suotou",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
+    },
+    {
+      "icon_id": "11334414",
+      "name": "点赞",
+      "font_class": "zan1",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
       "icon_id": "8974489",
       "name": "清空",
       "font_class": "icon_empty",

@@ -70,17 +70,20 @@
                             .up
                                 img(:src="!!cover && cover !== 'https://img3.doubanio.com/f/movie/8dd0c794499fe925ae2ae89ee30cd225750457b4/pics/movie/celebrity-default-medium.png' ? cover :'//p0.meituan.net/moviemachine/b99384cf1eacb139fde0509af424af6623037.png@160w_224h_1e_1c'") 
             .real-content-down
-                comments(:comments="comments")
+                comments(:comments="comments" v-if="!!getToken")
+                no-token(v-else :color="color")
     tab-bar(:leftandRight="1" :color="color")
 </template>
  
 <script>
 import _ from 'lodash'
+import { NoToken } from '@/views/Error'
 import Card from './components/Card'
 import { Progress } from 'vant'
 import Comments from '../comments'
 import HeaderTitle from "components/HeaderTitle";
 import TabBar from "components/TabBar";
+import { mapGetters } from 'vuex'
 import { getmovieDetail, getComments } from 'api/Movie'
 export default {
  name: 'movie-detail',
@@ -89,6 +92,7 @@ export default {
     HeaderTitle,
     TabBar,
     Comments,
+    NoToken,
     [Progress.name]: Progress
  },
  filters: {
@@ -111,6 +115,7 @@ export default {
     }
  },
  computed: {
+     ...mapGetters(['getToken']),
      moviePhoto () {
          if (!this.movieDetail.moviePhoto) return []
          return this.movieDetail.moviePhoto.cover
@@ -167,7 +172,7 @@ export default {
 .movie-detail
     padding: 80px 0 
     .content
-        height: 2000px
+        min-height: 2000px
         position: relative
         .opacity-content
             width: 100%
@@ -179,6 +184,7 @@ export default {
             z-index: 998
         .real-content
             width: 100%
+            height: 1000px
             position: absolute
             top: 0
             left: 0
@@ -186,6 +192,7 @@ export default {
             z-index: 998
             .real-content-up
                 width: 100%
+                height: 100%
                 padding: 30px
                 .content-detail-group
                     display: flex
@@ -301,6 +308,5 @@ export default {
                                 .score-list
                                     transform: scale(.7)
             .real-content-down
-                height: 500px
-
+                min-height: 300px
 </style>

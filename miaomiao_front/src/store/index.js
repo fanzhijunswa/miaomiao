@@ -11,6 +11,7 @@ export default new Vuex.Store({
   mutations: {
     setUserInfo (state, userInfo) {
       state.userInfo = userInfo
+      state.token = userInfo.token
       myStroage.set('userInfo', userInfo)
       myStroage.set('token', userInfo.token)
     },
