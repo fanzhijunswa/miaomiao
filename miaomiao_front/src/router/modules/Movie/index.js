@@ -9,9 +9,6 @@ export default [{
     {
       path: 'hot',
       name: 'hot',
-      meta: {
-        keepAlive: true
-      },
       component: () => import('@/views/Movie/components/MovieClassic')
     }, 
     {

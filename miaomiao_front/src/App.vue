@@ -1,10 +1,11 @@
 <template lang="pug">
 .container
-  router-view
+    keep-alive(include="User")
+        router-view 
 </template>
 <script>
 export default {
-  name: "",
+  name: "App",
   data() {
     return {};
   }

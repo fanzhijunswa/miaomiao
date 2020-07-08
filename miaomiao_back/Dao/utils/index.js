@@ -25,7 +25,6 @@ const myUpdate = function (filter,update,flag) {
   return new Promise((resolve,reject) => {
       this[!!flag ? 'updateMany' : 'updateOne'] (filter,update,(err,data) => {
           if(err) {reject(err);return false}
-          console.log(data)
           resolve()
           // resolve(`删除了${deletedCount}条数据`)
       })

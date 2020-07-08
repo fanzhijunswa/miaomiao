@@ -5,3 +5,5 @@ export const getUserTest = tel => request({ url: '/user/userTest', method: 'post
 export const registerUser = data => request({ url: '/user/register', method: 'post', data })
 // 注册
 export const loginUser = data => request({ url: '/user/login', method: 'post', data })
+// 修改用户资料
+export const editUser = data => request({ url: '/user/edit', method: "post", data })
