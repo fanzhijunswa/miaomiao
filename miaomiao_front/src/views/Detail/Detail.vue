@@ -29,8 +29,11 @@
                                     span 看过
                 .content-score-group
                     .up
-                        img(src="@/assets/images/cat.png")
-                        span 实时口碑
+                        .up-left
+                            img(src="@/assets/images/cat.png")
+                            span 实时口碑
+                        .up-right
+                            .up-button(@click="showFilmReviewFlag = true") 评论列表
                     .down
                         .left
                             h1 {{ !!movieDetail.aggregateRating && movieDetail.aggregateRating[0]['ratingValue'] }}
@@ -73,6 +76,14 @@
                 comments(:comments="comments" v-if="!!getToken")
                 no-token(v-else :color="color")
     tab-bar(:leftandRight="1" :color="color")
+    van-popup(
+        v-model="showFilmReviewFlag"
+        round 
+        lock-scroll
+        style="height:70%"
+        close-icon-position="bottom"
+        position="bottom")
+        film-review(v-if="!!getToken")
 </template>
  
 <script>
@@ -81,6 +92,7 @@ import { NoToken } from '@/views/Error'
 import Card from './components/Card'
 import { Progress } from 'vant'
 import Comments from '../comments'
+import FilmReview from '../FilmReview'
 import HeaderTitle from "components/HeaderTitle";
 import TabBar from "components/TabBar";
 import { mapGetters } from 'vuex'
@@ -93,6 +105,7 @@ export default {
     TabBar,
     Comments,
     NoToken,
+    FilmReview,
     [Progress.name]: Progress
  },
  filters: {
@@ -108,6 +121,7 @@ export default {
  },
  data () {
     return {
+        showFilmReviewFlag: false,
         movieDetail: {
         },
         comments: [],
@@ -166,6 +180,7 @@ export default {
 </script>
  
 <style lang="sass" scoped>
+@import '~styles/_color.sass'
 .left,.right
     i
         font-size: 40px
@@ -224,7 +239,6 @@ export default {
                             -webkit-box-orient: vertical   
                             -webkit-line-clamp: 2 
                             overflow: hidden
-                        
                         .button
                             flex: 1
                             display: flex
@@ -255,15 +269,26 @@ export default {
                     flex-direction: column
                     padding: 20px 30px 50px
                     .up
+                        display: flex
+                        justify-content: space-between
                         margin-bottom: 50px
-                        img
-                            width: 40px
-                            height: 40px
-                            vertical-align: middle
-                            margin-right: 15px
-                        span
-                            color: white
-                            font-size: 20px
+                        align-items: center
+                        .up-left
+                            img
+                                width: 40px
+                                height: 40px
+                                vertical-align: middle
+                                margin-right: 15px
+                            span
+                                color: white
+                                font-size: 20px
+                        .up-right
+                            .up-button
+                                font-size: 28px
+                                background-color: $color-green
+                                color: white
+                                padding: 10px
+                                border-radius: 12px
                     .down
                         display: flex
                         padding: 20px 0 50px

@@ -26,7 +26,7 @@ const userSchema = new Schema({
   },
   birthday: {
     type: Number,
-    set:value => new Date(value).getTime(),
+    set:value => new Date(+value).getTime(),
     default: 0
   },
   introduce: {

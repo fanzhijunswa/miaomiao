@@ -4,6 +4,7 @@ const formidable = require('formidable');
 const path = require('path')
 const User = require('../../../Dao/user')
 const mongoose = require('../../../Dao/db')
+const _ = require('lodash')
 
 editRouter.post('/',(req,res) => {
   const form = formidable({
@@ -14,9 +15,8 @@ editRouter.post('/',(req,res) => {
 })
 // fields是formData中body的内容,也就是append的内容,files就是上传的图片,也就是我们上传的 files
 form.parse(req, async (err, fields, files) => {
-    let temp = {}
-    const { _id } = fields
-    console.log(await User.myFind({_id}))
+    let filter = {}
+    let { _id,...obj } = fields
     // 说明上传了图片
     if(Object.keys(files).length > 0) {
         // path模块的一个方法,basename可以获取这个文件路径的文件名
@@ -25,9 +25,13 @@ form.parse(req, async (err, fields, files) => {
         const originUrl = req.headers.host
         // 这里设置的就是我们想要将上传文件保存的路径
         const file_url = `http://localhost:3004/user/upload/images/${basename}`
-        console.log(file_url)
+        obj['cover'] = file_url
     }
-    // res.send({code: '200',msg: '响应成功',data: {...fields,...temp}})
+    _.forEach(obj,(v,k) => { obj[k] = v })
+    await User.myUpdate(filter,{$set:obj})
+    const [userObj] = await User.myFind({_id})
+    let data = {...(JSON.parse(JSON.stringify(userObj)))}
+    res.send({code:200,msg:'响应成功',data})
 })
 })
 

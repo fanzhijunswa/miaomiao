@@ -4,6 +4,7 @@ export let actorFilter = function (item) {
 }
 
 export let birthdayFilter = function (val) {
+  if (!val) return ''
   const date = new Date(val)
   const year = date.getFullYear()
   const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1

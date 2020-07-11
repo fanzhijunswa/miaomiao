@@ -1,5 +1,5 @@
 <template lang="pug">
-.user
+.user 
     header-title 
         .title {{'个人中心'}}
     .content
@@ -8,8 +8,8 @@
                 .cover-cell-right(slot="default")
                     .cover-cell
                         .cover
-                            span(v-if="!newUserInfo.cover && !showPic" refs="span") {{ getUserInfo.name | coverFilter }}
-                            img(v-else ref="image")
+                            span(v-if="!newUserInfo.cover" ref="span") {{ getUserInfo.name | coverFilter }}
+                            img(v-else ref="image" :src="newUserInfo.cover")
                         .cover-right
                             i(class="iconfont icon-zhankai1")
             van-cell(title="昵称" @click="$router.push({path:'/editUser',query:{type:'name',value: !!newUserInfo.name ? newUserInfo : getUserInfo }})")
@@ -41,7 +41,7 @@
         van-cell-group
             van-cell(@click="$refs.upload.click()")
                 span 从相册中选择
-            van-cell(@click="(showPic = false,popFlag = false)")
+            van-cell(@click="(newUserInfo.cover = '',popFlag = false)")
                 span 恢复默认头像
                 input(type="file" ref="upload" style="display:none" @change="fileChange")
             van-cell(@click="popFlag = false")
@@ -73,7 +73,7 @@ export default {
  data () {
  return {
      popFlag: false,
-     showPic: false,
+     showPic: true,
      sexFlag: false,
      newUserInfo: {
          _id: '',
@@ -100,24 +100,26 @@ export default {
  mounted() {
      let { name, sex, cover, birthday, introduce, _id } = this.getUserInfo
      _.forEach({ name, sex, cover, birthday, introduce, _id }, (v, k) => { this.newUserInfo[k] = v })
+    console.log(this.getUserInfo)
+    console.log(this.newUserInfo)
  },
  activated () {
      const { value = '', type = '' } = this.$route.query
     switch (true) {
         case !value || !type : return false
-        case type === 'birthday': this.newUserInfo[type] = new Date(value).getTime(); break;
+        case type === 'birthday': this.newUserInfo[type] = +value; break;
         default: this.newUserInfo[type] = value
     }    
  },
  computed: {
-   ...mapGetters(['getUserInfo'])
+   ...mapGetters(['getUserInfo', 'getToken'])
  },
   methods: {
-    ...mapMutations(['removeUserInfo']),
+    ...mapMutations(['removeUserInfo', 'setUserInfo']),
     async mySave () {
         let formData = new FormData()
-        _.forEach(this.newUserInfo, (v, k) => formData.append(k, v))
-        await editUser(formData)
+        _.forEach(this.newUserInfo, (v, k) => { (v !== this.getUserInfo[k] || k === '_id') && formData.append(k, v) })
+        this.setUserInfo({ ...await editUser(formData), token: this.getToken })
     },
     changeSex () {
         this.$nextTick(() => {
@@ -134,10 +136,10 @@ export default {
         reader.readAsDataURL(fileObj)
         reader.onloadend = ({ target: { result } }) => {
             this.showPic = true
+            this.newUserInfo.cover = fileObj
             this.$nextTick(() => {
                 this.$refs.image.src = result
                 this.popFlag = false
-                this.newUserInfo.cover = fileObj
             })
         }
     },
